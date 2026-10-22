@@ -23,22 +23,180 @@
             <a href="rsvp.html" aria-current="page">RSVPs</a>
         </nav>
     </header>
+
     <main id="main">
         <header class="page-header">
             <p class="eyebrow">We hope you can celebrate with us</p>
             <h1>RSVPs</h1>
             <p>Saturday 3 July 2027 <span aria-hidden="true">✳</span> Lee, North Devon</p>
         </header>
+
         <section class="page-content narrow">
             <div class="intro-panel">
-                <p class="eyebrow">A little more time</p>
-                <h2>Invitations and replies will follow</h2>
-                <p>We're not collecting RSVPs just yet. We'll share the invitation and reply details once the venue and plans are confirmed.</p>
+                <p class="eyebrow">Guest details</p>
+                <h2>Let us know your plans</h2>
+                <p>We would love to know whether you can join us, how many guests are attending, and if there are any dietary or access needs.</p>
             </div>
-            <div class="soft-note">For now, please save Saturday 3 July 2027. We look forward to celebrating with you in North Devon.</div>
+
+            <form id="rsvp-form" class="rsvp-form" novalidate>
+                <div class="rsvp-grid">
+                    <div class="field">
+                        <label for="full-name">Full name</label>
+                        <input id="full-name" name="fullName" type="text" autocomplete="name" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="email">Email address</label>
+                        <input id="email" name="email" type="email" autocomplete="email" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="phone">Phone number</label>
+                        <input id="phone" name="phone" type="tel" autocomplete="tel">
+                    </div>
+
+                    <div class="field">
+                        <label for="attending">Will you be attending?</label>
+                        <select id="attending" name="attending" required>
+                            <option value="">Please select</option>
+                            <option value="yes">Joyfully attending</option>
+                            <option value="no">Regretfully declining</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="guest-count">Number of guests</label>
+                        <input id="guest-count" name="guestCount" type="number" min="1" max="10" value="1">
+                    </div>
+
+                    <div class="field">
+                        <label for="meal">Meal preference</label>
+                        <select id="meal" name="mealPreference">
+                            <option value="">Not sure yet</option>
+                            <option value="standard">Standard menu</option>
+                            <option value="vegetarian">Vegetarian</option>
+                            <option value="vegan">Vegan</option>
+                            <option value="gluten-free">Gluten-free</option>
+                            <option value="other">Other / allergies</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field field-full">
+                    <label for="accessibility">Accessibility or other requirements</label>
+                    <textarea id="accessibility" name="accessibilityNeeds" rows="4" placeholder="Let us know if you have any access, mobility, or dietary requirements."></textarea>
+                </div>
+
+                <div class="field field-full">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" name="notes" rows="4" placeholder="Anything you'd like to share with us?"></textarea>
+                </div>
+
+                <div class="rsvp-actions">
+                    <button type="submit" class="rsvp-submit">Send RSVP</button>
+                    <p id="rsvp-status" class="rsvp-status" aria-live="polite"></p>
+                </div>
+            </form>
+
+            <div class="soft-note">
+                This is a simple experimental version. It saves the RSVP details somewhere for testing before a proper backend is set up.
+            </div>
+
             <a class="link-card" href="faqs.html">Read the FAQs <span aria-hidden="true">→</span></a>
         </section>
     </main>
+
+    <script>
+        const RSVP_EMAIL = 'YOUR_EMAIL@EXAMPLE.COM';
+        const form = document.getElementById('rsvp-form');
+        const statusNode = document.getElementById('rsvp-status');
+
+        function setStatus(message, isError = false) {
+            statusNode.textContent = message;
+            statusNode.classList.toggle('error', isError);
+        }
+
+        function saveToLocalStorage(data) {
+            const existing = JSON.parse(localStorage.getItem('wedding-rsvps') || '[]');
+            existing.push({
+                ...data,
+                createdAt: new Date().toISOString()
+            });
+            localStorage.setItem('wedding-rsvps', JSON.stringify(existing));
+        }
+
+        async function sendToFormSubmit(data) {
+            const response = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(RSVP_EMAIL), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    ...data,
+                    _subject: 'Wedding RSVP',
+                    _captcha: 'false'
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('The form could not be sent');
+            }
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+            const payload = {
+                fullName: String(formData.get('fullName') || '').trim(),
+                email: String(formData.get('email') || '').trim(),
+                phone: String(formData.get('phone') || '').trim(),
+                attending: String(formData.get('attending') || '').trim(),
+                guestCount: Number(formData.get('guestCount') || 1),
+                mealPreference: String(formData.get('mealPreference') || '').trim(),
+                accessibilityNeeds: String(formData.get('accessibilityNeeds') || '').trim(),
+                notes: String(formData.get('notes') || '').trim()
+            };
+
+            if (!payload.fullName || !payload.email || !payload.attending) {
+                setStatus('Please complete your name, email address, and RSVP choice.', true);
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+                setStatus('Please enter a valid email address.', true);
+                return;
+            }
+
+            if (Number.isNaN(payload.guestCount) || payload.guestCount < 1) {
+                payload.guestCount = 1;
+            }
+
+            setStatus('Sending your RSVP...');
+
+            try {
+                const useRealEmail = RSVP_EMAIL && !RSVP_EMAIL.includes('EXAMPLE') && RSVP_EMAIL.includes('@');
+
+                if (useRealEmail) {
+                    await sendToFormSubmit(payload);
+                } else {
+                    saveToLocalStorage(payload);
+                }
+
+                form.reset();
+
+                if (useRealEmail) {
+                    setStatus('Thanks — your RSVP has been sent.');
+                } else {
+                    setStatus('Demo mode: your RSVP has been saved locally in this browser. Replace YOUR_EMAIL@EXAMPLE.COM with your real email to send it.');
+                }
+            } catch (error) {
+                saveToLocalStorage(payload);
+                setStatus('Demo mode: the message was saved locally instead because the form was not connected to a real email target.', true);
+            }
+        });
+    </script>
 </body>
 
 </html>
