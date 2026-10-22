@@ -9,7 +9,6 @@
     <title>RSVPs — Sophia &amp; Fintan</title>
     <link rel="stylesheet" href="style.css">
     <script src="password.js"></script>
-</head>
 
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -23,55 +22,67 @@
             <a href="rsvp.html" aria-current="page">RSVPs</a>
         </nav>
     </header>
-
     <main id="main">
         <header class="page-header">
             <p class="eyebrow">We hope you can celebrate with us</p>
             <h1>RSVPs</h1>
             <p>Saturday 3 July 2027 <span aria-hidden="true">✳</span> Lee, North Devon</p>
         </header>
+        <section class="page-content narrow">
+            <div class="rsvp-intro">
+                <p class="eyebrow">A little note from us</p>
+                <h2>Will you join us?</h2>
+                <p>Let us know if you can celebrate with us. Please share any dietary requirements so we can help everyone feel at home.</p>
+            </div>
 
-        <form id="rsvpForm">
-  <div class="form-group">
-    <label for="name">Full Name(s)</label>
-    <input type="text" id="name" name="name" required placeholder="e.g., Alex Smith">
-  </div>
+            <form class="rsvp-form" id="rsvpForm" method="post">
+                <div class="form-group">
+                    <label for="name">Full name <span aria-hidden="true">*</span></label>
+                    <input type="text" id="name" name="name" autocomplete="name" required placeholder="e.g. Alex Smith">
+                </div>
 
-  <div class="form-group">
-    <label for="attendance">Will you be attending?</label>
-    <select id="attendance" name="attendance" required>
-      <option value="">Please select...</option>
-      <option value="Accepts">Joyfully Accepts</option>
-      <option value="Declines">Regretfully Declines</option>
-    </select>
-  </div>
+                <div class="form-group">
+                    <label for="attendance">Will you be attending? <span aria-hidden="true">*</span></label>
+                    <select id="attendance" name="attendance" required>
+                        <option value="" selected disabled>Please select an option</option>
+                        <option value="Accepts">Joyfully accepts</option>
+                        <option value="Declines">Regretfully declines</option>
+                    </select>
+                </div>
 
-  <div class="form-group">
-    <label for="dietary">Dietary Requirements & Allergies</label>
-    <input type="text" id="dietary" name="dietary" placeholder="Let us know of any specific requirements">
-  </div>
+                <div class="form-group">
+                    <label for="dietary">Dietary requirements &amp; allergies</label>
+                    <textarea id="dietary" name="dietary" rows="3" placeholder="Please let us know about any dietary needs or allergies"></textarea>
+                </div>
 
-  <div class="form-group">
-    <label for="song">Evening Reception Song Request</label>
-    <input type="text" id="song" name="song" placeholder="Artist & Track title">
-  </div>
+                <div class="form-group">
+                    <label for="whatsapp">WhatsApp number</label>
+                    <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel" inputmode="tel" placeholder="e.g. +44 7700 900000">
+                    <span class="field-hint">Include your country code if you are sharing an international number.</span>
+                </div>
 
-  <div class="form-group">
-    <label for="email">Email Address</label>
-    <input type="email" id="email" name="email" required placeholder="you@example.com">
-  </div>
+                <div class="form-group">
+                    <label for="email">Email address <span aria-hidden="true">*</span></label>
+                    <input type="email" id="email" name="email" autocomplete="email" required placeholder="you@example.com">
+                </div>
 
-  <button type="submit" id="submitBtn">Send RSVP</button>
-</form>
+                <p class="form-note">Fields marked <span aria-hidden="true">*</span> are required.</p>
+                <button type="submit" id="submitBtn">Send RSVP <span aria-hidden="true">→</span></button>
+                <p class="form-response" id="formResponse" role="status" aria-live="polite"></p>
+                <noscript><p class="form-note">Please enable JavaScript to submit this form. Your details are not sent from this preview.</p></noscript>
+            </form>
 
-<div id="formResponse" style="margin-top: 15px; font-weight: 500;"></div>
-
-
-        
-
-            <a class="link-card" href="faqs.html">Read the FAQs <span aria-hidden="true">→</span></a>
+            <script>
+                document.getElementById("rsvpForm").addEventListener("submit", (event) => {
+                    event.preventDefault();
+                    document.getElementById("formResponse").textContent =
+                        "This form isn't connected to an RSVP service yet, so your details haven't been sent.";
+                });
+            </script>
         </section>
     </main>
+</body>
+
 
 <script>
   // Replace with your actual Google Apps Script Web App URL
