@@ -11,9 +11,7 @@ if (sessionStorage.getItem(accessKey) === "granted") {
         gate.className = "password-gate";
         gate.innerHTML = `
             <form class="password-card">
-                <p class="eyebrow">A private celebration</p>
                 <h1>Welcome</h1>
-                <p class="password-intro">Enter the password to visit our wedding website.</p>
                 <label for="site-password">Password</label>
                 <input id="site-password" name="password" type="password" autocomplete="current-password" required>
                 <p class="password-error" role="alert" aria-live="polite"></p>
