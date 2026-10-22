@@ -107,7 +107,7 @@
     </main>
 
     <script>
-        const RSVP_EMAIL = 'YOUR_EMAIL@EXAMPLE.COM';
+        const RSVP_EMAIL = 'fintanmunnery@gmail.com';
         const form = document.getElementById('rsvp-form');
         const statusNode = document.getElementById('rsvp-status');
 
@@ -176,7 +176,7 @@
             setStatus('Sending your RSVP...');
 
             try {
-                const useRealEmail = RSVP_EMAIL && !RSVP_EMAIL.includes('EXAMPLE') && RSVP_EMAIL.includes('@');
+                const useRealEmail = Boolean(RSVP_EMAIL && RSVP_EMAIL.includes('@') && !RSVP_EMAIL.includes('EXAMPLE'));
 
                 if (useRealEmail) {
                     await sendToFormSubmit(payload);
@@ -189,14 +189,13 @@
                 if (useRealEmail) {
                     setStatus('Thanks — your RSVP has been sent.');
                 } else {
-                    setStatus('Demo mode: your RSVP has been saved locally in this browser. Replace YOUR_EMAIL@EXAMPLE.COM with your real email to send it.');
+                    setStatus('Your RSVP has been saved locally in this browser. Replace the email target with your real address to send it.');
                 }
             } catch (error) {
                 saveToLocalStorage(payload);
-                setStatus('Demo mode: the message was saved locally instead because the form was not connected to a real email target.', true);
+                setStatus('Your RSVP could not be sent right now, so it was saved locally as a backup. Please try again later or contact us.', true);
             }
         });
     </script>
 </body>
-
 </html>
