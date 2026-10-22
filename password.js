@@ -1,5 +1,5 @@
 const accessKey = "weddingSiteAccess";
-const sitePassword = "seals";
+const sitePassword = "ilovesophia";
 
 if (sessionStorage.getItem(accessKey) === "granted") {
     document.documentElement.classList.add("wedding-access");
