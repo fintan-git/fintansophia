@@ -31,171 +31,93 @@
             <p>Saturday 3 July 2027 <span aria-hidden="true">✳</span> Lee, North Devon</p>
         </header>
 
-        <section class="page-content narrow">
-            <div class="intro-panel">
-                <p class="eyebrow">Guest details</p>
-                <h2>Let us know your plans</h2>
-                <p>We would love to know whether you can join us, how many guests are attending, and if there are any dietary or access needs.</p>
-            </div>
+        <form id="rsvpForm">
+  <div class="form-group">
+    <label for="name">Full Name(s)</label>
+    <input type="text" id="name" name="name" required placeholder="e.g., Alex Smith">
+  </div>
 
-            <form id="rsvp-form" class="rsvp-form" novalidate>
-                <div class="rsvp-grid">
-                    <div class="field">
-                        <label for="full-name">Full name</label>
-                        <input id="full-name" name="fullName" type="text" autocomplete="name" required>
-                    </div>
+  <div class="form-group">
+    <label for="attendance">Will you be attending?</label>
+    <select id="attendance" name="attendance" required>
+      <option value="">Please select...</option>
+      <option value="Accepts">Joyfully Accepts</option>
+      <option value="Declines">Regretfully Declines</option>
+    </select>
+  </div>
 
-                    <div class="field">
-                        <label for="email">Email address</label>
-                        <input id="email" name="email" type="email" autocomplete="email" required>
-                    </div>
+  <div class="form-group">
+    <label for="dietary">Dietary Requirements & Allergies</label>
+    <input type="text" id="dietary" name="dietary" placeholder="Let us know of any specific requirements">
+  </div>
 
-                    <div class="field">
-                        <label for="phone">Phone number</label>
-                        <input id="phone" name="phone" type="tel" autocomplete="tel">
-                    </div>
+  <div class="form-group">
+    <label for="song">Evening Reception Song Request</label>
+    <input type="text" id="song" name="song" placeholder="Artist & Track title">
+  </div>
 
-                    <div class="field">
-                        <label for="attending">Will you be attending?</label>
-                        <select id="attending" name="attending" required>
-                            <option value="">Please select</option>
-                            <option value="yes">Joyfully attending</option>
-                            <option value="no">Regretfully declining</option>
-                        </select>
-                    </div>
+  <div class="form-group">
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" required placeholder="you@example.com">
+  </div>
 
-                    <div class="field">
-                        <label for="guest-count">Number of guests</label>
-                        <input id="guest-count" name="guestCount" type="number" min="1" max="10" value="1">
-                    </div>
+  <button type="submit" id="submitBtn">Send RSVP</button>
+</form>
 
-                    <div class="field">
-                        <label for="meal">Meal preference</label>
-                        <select id="meal" name="mealPreference">
-                            <option value="">Not sure yet</option>
-                            <option value="standard">Standard menu</option>
-                            <option value="vegetarian">Vegetarian</option>
-                            <option value="vegan">Vegan</option>
-                            <option value="gluten-free">Gluten-free</option>
-                            <option value="other">Other / allergies</option>
-                        </select>
-                    </div>
-                </div>
+<div id="formResponse" style="margin-top: 15px; font-weight: 500;"></div>
 
-                <div class="field field-full">
-                    <label for="accessibility">Accessibility or other requirements</label>
-                    <textarea id="accessibility" name="accessibilityNeeds" rows="4" placeholder="Let us know if you have any access, mobility, or dietary requirements."></textarea>
-                </div>
 
-                <div class="field field-full">
-                    <label for="notes">Notes</label>
-                    <textarea id="notes" name="notes" rows="4" placeholder="Anything you'd like to share with us?"></textarea>
-                </div>
-
-                <div class="rsvp-actions">
-                    <button type="submit" class="rsvp-submit">Send RSVP</button>
-                    <p id="rsvp-status" class="rsvp-status" aria-live="polite"></p>
-                </div>
-            </form>
-
-            <div class="soft-note">
-                This is a simple experimental version. It saves the RSVP details somewhere for testing before a proper backend is set up.
-            </div>
+        
 
             <a class="link-card" href="faqs.html">Read the FAQs <span aria-hidden="true">→</span></a>
         </section>
     </main>
 
-    <script>
-        const RSVP_EMAIL = 'fintanmunnery@gmail.com';
-        const form = document.getElementById('rsvp-form');
-        const statusNode = document.getElementById('rsvp-status');
+<script>
+  // Replace with your actual Google Apps Script Web App URL
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbzWi61g5Yc_iXmo0IuPwo74IAWaSC8tX-ELbJNWB7dtaCcc5rkvSAi8x4CH2mkmKmHq/exec';
+  
+  const form = document.getElementById('rsvpForm');
+  const responseDiv = document.getElementById('formResponse');
+  const submitBtn = document.getElementById('submitBtn');
 
-        function setStatus(message, isError = false) {
-            statusNode.textContent = message;
-            statusNode.classList.toggle('error', isError);
-        }
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending RSVP...';
 
-        function saveToLocalStorage(data) {
-            const existing = JSON.parse(localStorage.getItem('wedding-rsvps') || '[]');
-            existing.push({
-                ...data,
-                createdAt: new Date().toISOString()
-            });
-            localStorage.setItem('wedding-rsvps', JSON.stringify(existing));
-        }
+    const formData = {
+      name: document.getElementById('name').value,
+      attendance: document.getElementById('attendance').value,
+      dietary: document.getElementById('dietary').value,
+      song: document.getElementById('song').value,
+      email: document.getElementById('email').value
+    };
 
-        async function sendToFormSubmit(data) {
-            const response = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(RSVP_EMAIL), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    ...data,
-                    _subject: 'Wedding RSVP',
-                    _captcha: 'false'
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('The form could not be sent');
-            }
-        }
-
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            const formData = new FormData(form);
-            const payload = {
-                fullName: String(formData.get('fullName') || '').trim(),
-                email: String(formData.get('email') || '').trim(),
-                phone: String(formData.get('phone') || '').trim(),
-                attending: String(formData.get('attending') || '').trim(),
-                guestCount: Number(formData.get('guestCount') || 1),
-                mealPreference: String(formData.get('mealPreference') || '').trim(),
-                accessibilityNeeds: String(formData.get('accessibilityNeeds') || '').trim(),
-                notes: String(formData.get('notes') || '').trim()
-            };
-
-            if (!payload.fullName || !payload.email || !payload.attending) {
-                setStatus('Please complete your name, email address, and RSVP choice.', true);
-                return;
-            }
-
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
-                setStatus('Please enter a valid email address.', true);
-                return;
-            }
-
-            if (Number.isNaN(payload.guestCount) || payload.guestCount < 1) {
-                payload.guestCount = 1;
-            }
-
-            setStatus('Sending your RSVP...');
-
-            try {
-                const useRealEmail = Boolean(RSVP_EMAIL && RSVP_EMAIL.includes('@') && !RSVP_EMAIL.includes('EXAMPLE'));
-
-                if (useRealEmail) {
-                    await sendToFormSubmit(payload);
-                } else {
-                    saveToLocalStorage(payload);
-                }
-
-                form.reset();
-
-                if (useRealEmail) {
-                    setStatus('Thanks — your RSVP has been sent.');
-                } else {
-                    setStatus('Your RSVP has been saved locally in this browser. Replace the email target with your real address to send it.');
-                }
-            } catch (error) {
-                saveToLocalStorage(payload);
-                setStatus('Your RSVP could not be sent right now, so it was saved locally as a backup. Please try again later or contact us.', true);
-            }
-        });
-    </script>
+    fetch(scriptURL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(() => {
+      responseDiv.textContent = 'Thank you! Your RSVP has been successfully recorded.';
+      responseDiv.style.color = '#2d6a4f';
+      form.reset();
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send RSVP';
+    })
+    .catch(error => {
+      console.error('Submission error:', error);
+      responseDiv.textContent = 'Something went wrong. Please try refreshing or reach out directly.';
+      responseDiv.style.color = '#d90429';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send RSVP';
+    });
+  });
+</script>
+    
 </body>
 </html>
