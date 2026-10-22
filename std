@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fffaf0">
+    <meta name="description" content="Sophia and Fintan are getting married on Saturday 3 July 2027 in North Devon. Details to follow.">
+    <title>Save the Date — Sophia &amp; Fintan</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --paper: #fffaf0;
+            --ink: #211342;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-width: 280px;
+            height: 100%;
+            min-height: 100%;
+            margin: 0;
+        }
+
+        body {
+            overflow: hidden;
+            background: var(--paper);
+            color: var(--ink);
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        .invitation {
+            position: relative;
+            display: grid;
+            width: 100%;
+            height: 100vh;
+            height: 100svh;
+            min-height: 400px;
+            place-items: center;
+            overflow: hidden;
+            padding: 4svh 5vw;
+            isolation: isolate;
+            text-align: center;
+        }
+
+        .watercolor {
+            position: absolute;
+            z-index: -1;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .invitation-copy {
+            display: flex;
+            width: min(100%, 1100px);
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3svh 0;
+        }
+
+        h1,
+        p {
+            margin: 0;
+        }
+
+        h1 {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: clamp(2rem, min(8.9vw, 12svh), 7.2rem);
+            font-weight: 300;
+            letter-spacing: .045em;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .names {
+            margin-top: clamp(1.4rem, 6.6svh, 5.5rem);
+            font-family: "Segoe Script", "Brush Script MT", "URW Chancery L", cursive;
+            font-size: clamp(2.2rem, min(6.6vw, 9svh), 5.25rem);
+            font-style: italic;
+            line-height: 1.2;
+        }
+
+        .date {
+            display: grid;
+            gap: .04em;
+            margin-top: clamp(2rem, 9svh, 7rem);
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: clamp(1rem, min(3vw, 4svh), 2rem);
+            font-weight: 300;
+            letter-spacing: .055em;
+            line-height: 1.5;
+            text-transform: uppercase;
+        }
+
+        .details {
+            margin-top: clamp(1.1rem, 4svh, 3rem);
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: clamp(.8rem, min(2.25vw, 3svh), 1.45rem);
+            font-weight: 300;
+            letter-spacing: .055em;
+            text-transform: uppercase;
+        }
+
+        @media (max-height: 520px) and (orientation: landscape) {
+            .invitation {
+                min-height: 320px;
+            }
+
+            .invitation-copy {
+                padding: 0;
+            }
+
+            h1 {
+                font-size: clamp(1.7rem, 8vh, 3.2rem);
+            }
+
+            .names {
+                margin-top: 2vh;
+                font-size: clamp(1.8rem, 7vh, 2.8rem);
+            }
+
+            .date {
+                margin-top: 3vh;
+                font-size: clamp(.85rem, 3.3vh, 1.15rem);
+            }
+
+            .details {
+                margin-top: 1.5vh;
+                font-size: clamp(.72rem, 2.7vh, .95rem);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="invitation" aria-labelledby="invitation-title">
+        <svg class="watercolor" viewBox="0 0 1200 1600" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+                <linearGradient id="rose-wash" x1="0" y1="0" x2=".15" y2="1">
+                    <stop offset="0" stop-color="#f4a9bb" stop-opacity=".78" />
+                    <stop offset=".62" stop-color="#f4a9bb" stop-opacity=".52" />
+                    <stop offset="1" stop-color="#f4a9bb" stop-opacity="0" />
+                </linearGradient>
+                <linearGradient id="blue-wash" x1=".2" y1="0" x2=".55" y2="1">
+                    <stop offset="0" stop-color="#9dcfe6" stop-opacity="0" />
+                    <stop offset=".42" stop-color="#9dcfe6" stop-opacity=".56" />
+                    <stop offset="1" stop-color="#88c2dc" stop-opacity=".82" />
+                </linearGradient>
+                <filter id="watercolor-edge" x="-8%" y="-8%" width="116%" height="116%">
+                    <feTurbulence type="fractalNoise" baseFrequency=".012 .018" numOctaves="3" seed="14" result="paper-grain" />
+                    <feDisplacementMap in="SourceGraphic" in2="paper-grain" scale="30" xChannelSelector="R" yChannelSelector="G" />
+                </filter>
+                <filter id="wash-softness">
+                    <feGaussianBlur stdDeviation="17" />
+                </filter>
+            </defs>
+            <path d="M-30 0H1230V285C1080 267 1045 350 920 335C766 317 694 406 546 399C398 393 284 472 126 426C42 401 7 374-30 386Z" fill="url(#rose-wash)" filter="url(#watercolor-edge)" />
+            <path d="M-40 0H1240V290C1090 271 1044 357 921 339C770 318 686 416 543 404C395 391 275 480 124 433C43 407 7 380-40 392Z" fill="#ee9fb8" opacity=".14" filter="url(#wash-softness)" />
+            <path d="M-35 1600H1235V1380C1084 1351 1046 1270 901 1285C759 1300 681 1199 535 1215C388 1231 285 1150 137 1192C48 1218 8 1240-35 1228Z" fill="url(#blue-wash)" filter="url(#watercolor-edge)" />
+            <path d="M-40 1600H1240V1380C1080 1351 1045 1262 904 1280C750 1298 675 1196 534 1214C390 1232 278 1147 132 1194C48 1221 5 1244-40 1228Z" fill="#9dcfe6" opacity=".14" filter="url(#wash-softness)" />
+        </svg>
+
+        <div class="invitation-copy">
+            <h1 id="invitation-title">We&rsquo;re getting<br>married!</h1>
+            <p class="names">Sophia &amp; Fintan</p>
+            <p class="date">
+                <span>Saturday 3 July 2027</span>
+                <span>North Devon</span>
+            </p>
+            <p class="details">Details to follow</p>
+        </div>
+    </main>
+</body>
+</html>
