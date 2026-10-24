@@ -57,27 +57,6 @@
             pointer-events: none;
         }
 
-        .seal-wrap {
-            position: absolute;
-            left: 50%;
-            bottom: 3vh;
-            width: min(78vw, 940px);
-            transform: translateX(-50%);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .seal {
-            display: block;
-            width: 100%;
-            height: auto;
-            fill: none;
-            stroke: #1c7ad6;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-width: 4;
-        }
-
         .invitation-copy {
             position: relative;
             z-index: 1;
@@ -138,10 +117,6 @@
         @media (max-height: 520px) and (orientation: landscape) {
             .invitation {
                 min-height: 320px;
-            }
-
-            .seal-wrap {
-                bottom: 1.5vh;
             }
 
             .invitation-copy {
@@ -213,33 +188,6 @@
                 <span>North Devon</span>
             </p>
             <p class="details">Check back soon for more details</p>
-        </div>
-
-        <div class="seal-wrap" aria-hidden="true">
-            <svg class="seal" viewBox="0 0 1100 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seal illustration">
-                <path d="M104 280
-                         C101 221 122 172 162 131
-                         C204 87 258 73 308 84
-                         C345 92 374 109 404 140
-                         C441 175 474 180 507 173
-                         C564 160 616 131 674 126
-                         C765 119 847 152 910 201
-                         C952 234 994 277 1018 325
-                         C1037 361 1033 405 1002 434
-                         C968 464 910 470 862 457
-                         C815 444 777 425 734 421
-                         C662 415 626 437 560 438
-                         C492 439 456 405 396 392
-                         C343 381 295 385 254 370
-                         C208 353 168 321 138 295
-                         C122 282 113 282 104 280 Z"/>
-                <path d="M132 291 C158 266 183 248 211 235 C233 225 260 228 281 245 C247 256 225 277 212 305 C195 337 171 344 146 335 C130 330 117 312 132 291 Z"/>
-                <path d="M750 339 C814 321 874 328 929 354 C902 395 865 424 805 438 C758 449 704 446 653 424 C683 399 705 372 750 339 Z"/>
-                <path d="M163 184 C188 166 209 161 241 163"/>
-                <path d="M196 206 C183 195 175 188 169 176"/>
-                <circle cx="186" cy="209" r="5"/>
-                <path d="M291 158 C319 144 354 136 383 141 C420 146 448 163 469 190"/>
-            </svg>
         </div>
     </main>
 </body>
